@@ -51,9 +51,6 @@ test-headless: env
 	coverage report --include=src/* ${CMD_SEPARATOR} \
 	coverage html --include=src/*
 
-release-version:
-	git describe --tags > RELEASE-VERSION
-
 dist: $(SRC) release-version env
 	${VENV_ACTIVATE} ${CMD_SEPARATOR} \
 	${PIP} install wheel ${CMD_SEPARATOR} \
