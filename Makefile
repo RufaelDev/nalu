@@ -15,10 +15,6 @@ env/bin/activate:
 	${PIP} install --upgrade pip ${CMD_SEPARATOR} \
 	${PIP} install -Ur requirements.txt
 
-# Launching html page at the end. This could give problems
-# if running this on headless systems, but on Windows 
-# this should never be the case, this is for developers
-# not for CI.
 test: install-nalu test-headless
 
 else
@@ -67,18 +63,6 @@ install-nalu: env dist
 	${VENV_ACTIVATE} ${CMD_SEPARATOR} \
 	${PIP} uninstall -y nalu ${CMD_SEPARATOR} \
 	${PIP} install --no-cache-dir ${NALU_WHEEL}
-
-
-ifneq ($(OS),Windows_NT)
-# Assumes you have a correctly configured ~/.pypirc file, see
-# https://gitlab.internal.unified-streaming.com/operations/base-images/validator-cli
-upload: clean dist
-	${PYTHON} -m venv env ;\
-	. env/bin/activate ;\
-	${PIP} install --upgrade pip ;\
-	${PIP} install twine; \
-	twine upload --repository gitlab.internal dist/*
-endif
 
 clean:
 	${RM} dist
