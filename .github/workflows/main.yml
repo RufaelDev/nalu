@@ -43,8 +43,8 @@ jobs:
       #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
       #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: clean
-        run: make clean
+      #- name: clean
+      #  run: make clean
       - name: test-and-coverage
         run: make test
 
@@ -72,7 +72,7 @@ jobs:
           pip install -r requirements.txt
       # Windows uses "test-headless" target to avoid launching chrome with coverage
       # results, which will hang this job forever.
-      - name: clean
-        run: make clean
+      #- name: clean
+      #  run: make clean
       - name: test-and-coverage
-        run: make test-headless
+        run: make test
