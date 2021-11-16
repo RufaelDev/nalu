@@ -46,10 +46,10 @@ env: env/bin/activate
 
 test-headless: env
 	${VENV_ACTIVATE} ${CMD_SEPARATOR} \
-	coverage run -m pytest 
-    ${VENV_ACTIVATE} ${CMD_SEPARATOR} \
-    coverage report --include=src/* ${CMD_SEPARATOR} \
-    coverage html --include=src/*
+	coverage run -m pytest \
+	${VENV_ACTIVATE} ${CMD_SEPARATOR} \
+	coverage report --include=src/* ${CMD_SEPARATOR} \
+	coverage html --include=src/*
 
 release-version:
 	git describe --tags > RELEASE-VERSION
