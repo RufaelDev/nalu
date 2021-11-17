@@ -50,6 +50,22 @@ class NaluTests(unittest.TestCase):
         self.assertEqual((self.sps2.nal_parameters["nal_ref_idc"] != 0), True)
         self.assertEqual((self.sps3.nal_parameters["nal_ref_idc"] != 0), True)
 
+    def test_nal_rbsp_exists(self):
+        self.assertEqual((len(self.sps1.nal_rbsp_bitstream) > 0), True)
+        self.assertEqual((len(self.sps2.nal_rbsp_bitstream) > 0), True)
+        self.assertEqual((len(self.sps3.nal_rbsp_bitstream) > 0), True)
+
+    def test_sps_rbsp_reserved_zero2bits(self):
+        self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["reserved_zero_2bits"] == 0), True)
+        self.assertEqual((self.sps2.nal_parameters["sps_rbsp_parameters"]["reserved_zero_2bits"] == 0), True)
+        self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["reserved_zero_2bits"] == 0), True)
+
+    def test_sps_seq_paarameter_set_ID(self):
+        self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in range(32)), True)
+        self.assertEqual((self.sps2.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in range(32)), True)
+        self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in range(32)), True)
+
+
 
   
 
