@@ -17,15 +17,39 @@
 """
 import unittest
 #from nalu.nalu import NAL
-from nalu.nalu import *
+from tests.test_nal_bytes import *
+from src.nalu.nalu import *
 
 class NaluTests(unittest.TestCase):
-    
-    def test_nalu_parse(self):
+
+    sps1 = NAL(sps1_nal)
+    sps2 = NAL(sps2_nal)
+    sps3 = NAL(sps3_nal)
+
+    def test_nalu_forbidden_header_bit(self):
+
         self.assertEqual(
-            1,
-            1
+            self.sps1.nal_parameters["forbidden_zero_bit"], False
+
         )
+        self.assertEqual(
+            self.sps2.nal_parameters["forbidden_zero_bit"], False
+
+        )
+        self.assertEqual(
+            self.sps3.nal_parameters["forbidden_zero_bit"], False
+
+        )
+    def test_sps_type(self):
+        self.assertEqual(self.sps1.nal_parameters["nal_unit_type"], 7)
+        self.assertEqual(self.sps2.nal_parameters["nal_unit_type"], 7)
+        self.assertEqual(self.sps3.nal_parameters["nal_unit_type"], 7)
+
+    def test_sps_nal_ref_idc(self):
+        self.assertEqual((self.sps1.nal_parameters["nal_ref_idc"] != 0), True)
+        self.assertEqual((self.sps2.nal_parameters["nal_ref_idc"] != 0), True)
+        self.assertEqual((self.sps3.nal_parameters["nal_ref_idc"] != 0), True)
+
 
   
 
