@@ -61,9 +61,27 @@ class NaluTests(unittest.TestCase):
         self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["reserved_zero_2bits"] == 0), True)
 
     def test_sps_seq_paarameter_set_ID(self):
-        self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in range(32)), True)
-        self.assertEqual((self.sps2.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in range(32)), True)
-        self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in range(32)), True)
+        allowed = range(32)
+        self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in allowed), True)
+        self.assertEqual((self.sps2.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in allowed), True)
+        self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["seq_parameter_set_id"] in allowed), True)
+
+    def test_sps_log2_max_frame_num_minus4(self):
+        allowed = range(13)
+        self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["log2_max_frame_num_minus4"] in allowed), True)
+        self.assertEqual((self.sps2.nal_parameters["sps_rbsp_parameters"]["log2_max_frame_num_minus4"] in allowed),
+                         True)
+        self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["log2_max_frame_num_minus4"] in allowed),
+                         True)
+
+    def test_pic_order_cnt_type(self):
+        allowed = range(3)
+        self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["pic_order_cnt_type"] in allowed),
+                         True)
+        self.assertEqual((self.sps2.nal_parameters["sps_rbsp_parameters"]["pic_order_cnt_type"] in allowed),
+                         True)
+        self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["pic_order_cnt_type"] in allowed),
+                         True)
 
 
 
