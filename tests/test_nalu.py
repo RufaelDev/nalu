@@ -111,6 +111,77 @@ class NaluTests(unittest.TestCase):
         self.assertEqual((self.sps3.nal_parameters["sps_rbsp_parameters"]["pic_order_cnt_type"] in allowed),
                          True)
 
+    def test_pps_pic_parameter_set_id(self):
+        allowed = range(256)
+        self.assertEqual((self.pps1.nal_parameters["pps_rbsp_parameters"]["pic_parameter_set_id"] in allowed), True)
+        self.assertEqual((self.pps2.nal_parameters["pps_rbsp_parameters"]["pic_parameter_set_id"] in allowed), True)
+        self.assertEqual((self.pps3.nal_parameters["pps_rbsp_parameters"]["pic_parameter_set_id"] in allowed), True)
+
+    def test_pps_seq_parameter_set_id(self):
+        allowed = range(32)
+        self.assertEqual((self.pps1.nal_parameters["pps_rbsp_parameters"]["seq_parameter_set_id"] in allowed), True)
+        self.assertEqual((self.pps2.nal_parameters["pps_rbsp_parameters"]["seq_parameter_set_id"] in allowed), True)
+        self.assertEqual((self.pps3.nal_parameters["pps_rbsp_parameters"]["seq_parameter_set_id"] in allowed), True)
+
+    def test_pps_num_ref_idx_10_default_active_minus1(self):
+        allowed = range(32)
+        self.assertEqual((self.pps1.nal_parameters["pps_rbsp_parameters"]["num_ref_idx_10_default_active_minus1"] in allowed),
+                         True)
+        self.assertEqual(
+            (self.pps2.nal_parameters["pps_rbsp_parameters"]["num_ref_idx_10_default_active_minus1"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps3.nal_parameters["pps_rbsp_parameters"]["num_ref_idx_10_default_active_minus1"] in allowed),
+            True)
+
+    def test_pps_num_ref_idx_11_default_active_minus1(self):
+        allowed = range(32)
+        self.assertEqual(
+            (self.pps1.nal_parameters["pps_rbsp_parameters"]["num_ref_idx_11_default_active_minus1"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps2.nal_parameters["pps_rbsp_parameters"]["num_ref_idx_11_default_active_minus1"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps3.nal_parameters["pps_rbsp_parameters"]["num_ref_idx_11_default_active_minus1"] in allowed),
+            True)
+
+    def test_pps_weighted_bipred_idc(self):
+        allowed = range(3)
+        self.assertEqual(
+            (self.pps1.nal_parameters["pps_rbsp_parameters"]["weighted_bipred_idc"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps2.nal_parameters["pps_rbsp_parameters"]["weighted_bipred_idc"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps3.nal_parameters["pps_rbsp_parameters"]["weighted_bipred_idc"] in allowed),
+            True)
+
+    def test_pps_pic_init_qs_minus26(self):
+        allowed = range(-26,26)
+        self.assertEqual(
+            (self.pps1.nal_parameters["pps_rbsp_parameters"]["pic_init_qs_minus26"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps2.nal_parameters["pps_rbsp_parameters"]["pic_init_qs_minus26"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps3.nal_parameters["pps_rbsp_parameters"]["pic_init_qs_minus26"] in allowed),
+            True)
+
+    def test_pps_chroma_qp_index_offset(self):
+        allowed = range(-12,13)
+        self.assertEqual(
+            (self.pps1.nal_parameters["pps_rbsp_parameters"]["chroma_qp_index_offset"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps2.nal_parameters["pps_rbsp_parameters"]["chroma_qp_index_offset"] in allowed),
+            True)
+        self.assertEqual(
+            (self.pps3.nal_parameters["pps_rbsp_parameters"]["chroma_qp_index_offset"] in allowed),
+            True)
+
 
 
   

@@ -524,59 +524,59 @@ class NAL(object):
                 while i <= pps_rbsp_data["pic_size_in_map_units_minus1"]:
                     pps_rbsp_data["slice_group_id "], BitStreamPointer = read_u(self.nal_rbsp_bitstream, BitStreamPointer, v_length)
                     i += 1
-            CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
-            pps_rbsp_data["num_ref_idx_10_default_active_minus1"] = CodeNum
-            CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
-            pps_rbsp_data["num_ref_idx_11_default_active_minus1"] = CodeNum
+        CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
+        pps_rbsp_data["num_ref_idx_10_default_active_minus1"] = CodeNum
+        CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
+        pps_rbsp_data["num_ref_idx_11_default_active_minus1"] = CodeNum
 
-            pps_rbsp_data["weighted_pred_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
+        pps_rbsp_data["weighted_pred_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
+        BitStreamPointer += 1
+        pps_rbsp_data["weighted_bipred_idc"], BitStreamPointer = read_u(self.nal_rbsp_bitstream, BitStreamPointer, 2)
+        CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
+        pps_rbsp_data["pic_init_qp_minus26"] = get_se(CodeNum)
+        CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
+        pps_rbsp_data["pic_init_qs_minus26"] = get_se(CodeNum)
+        CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
+        pps_rbsp_data["chroma_qp_index_offset"] = get_se(CodeNum)
+        pps_rbsp_data["deblocking_filter_control_present_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
+        BitStreamPointer += 1
+        ### if more RBSP data to follow.
+        if self.nal_rbsp_bitstream.length > BitStreamPointer:
+            pps_rbsp_data["transform_8x8_mode_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
             BitStreamPointer += 1
-            pps_rbsp_data["weighted_bipred_idc"], BitStreamPointer = read_u(self.nal_rbsp_bitstream, BitStreamPointer, 2)
-            CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
-            pps_rbsp_data["pic_init_qp_minus26"] = get_se(CodeNum)
-            CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
-            pps_rbsp_data["pic_init_qs_minus26"] = get_se(CodeNum)
-            CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
-            pps_rbsp_data["chroma_qp_index_offset"] = get_se(CodeNum)
-            pps_rbsp_data["deblocking_filter_control_present_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
+            pps_rbsp_data["pic_scaling_matrix_present_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
             BitStreamPointer += 1
-            ### if more RBSP data to follow.
-            if self.nal_rbsp_bitstream.length > BitStreamPointer:
-                pps_rbsp_data["transform_8x8_mode_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
-                BitStreamPointer += 1
-                pps_rbsp_data["pic_scaling_matrix_present_flag"] = self.nal_rbsp_bitstream[BitStreamPointer]
-                BitStreamPointer += 1
-                if pps_rbsp_data["pic_scaling_matrix_present_flag"] == True:
-                    i = 0
-                    pps_rbsp_data["pic_scaling_list_present_flag"] = []
-                    if (sps_chroma_format_idc != 3):
-                        limit = 6 + (2 * int(pps_rbsp_data["transform_8x8_mode_flag"]))
-                    else:
-                        limit = 6 + (6 * int(pps_rbsp_data["transform_8x8_mode_flag"]))
-                    while i < limit:
-                        pps_rbsp_data["pic_scaling_list_present_flag"].append(self.nal_rbsp_bitstream[BitStreamPointer])
-                        BitStreamPointer += 1
-                        pps_rbsp_data["ScalingList4x4"] = []
-                        pps_rbsp_data["UseDefaultScalingMatrix4x4Flag"] = []
-                        pps_rbsp_data["ScalingList8x8"] = []
-                        pps_rbsp_data["UseDefaultScalingMatrix8x8Flag"] = []
-                        if (pps_rbsp_data["pic_scaling_list_present_flag"][i]):
-                            if i < 6:
-                                scaling_list, use_defualtmatrix, BitStreamPointer = self.get_scaling_list(16,
-                                                                                                     self.nal_rbsp_bitstream,
-                                                                                                     BitStreamPointer)
-                                pps_rbsp_data["ScalingList4x4"].append(scaling_list)
-                                pps_rbsp_data["UseDefaultScalingMatrix4x4Flag"] = use_defualtmatrix
-                            else:
-                                scaling_list, use_defualtmatrix, BitStreamPointer = self.get_scaling_list(16,
-                                                                                                     self.nal_rbsp_bitstream,
-                                                                                                     BitStreamPointer)
-                                pps_rbsp_data["ScalingList8x8"].append(scaling_list)
-                                pps_rbsp_data["UseDefaultScalingMatrix8x8Flag"] = use_defualtmatrix
+            if pps_rbsp_data["pic_scaling_matrix_present_flag"] == True:
+                i = 0
+                pps_rbsp_data["pic_scaling_list_present_flag"] = []
+                if (sps_chroma_format_idc != 3):
+                    limit = 6 + (2 * int(pps_rbsp_data["transform_8x8_mode_flag"]))
+                else:
+                    limit = 6 + (6 * int(pps_rbsp_data["transform_8x8_mode_flag"]))
+                while i < limit:
+                    pps_rbsp_data["pic_scaling_list_present_flag"].append(self.nal_rbsp_bitstream[BitStreamPointer])
+                    BitStreamPointer += 1
+                    pps_rbsp_data["ScalingList4x4"] = []
+                    pps_rbsp_data["UseDefaultScalingMatrix4x4Flag"] = []
+                    pps_rbsp_data["ScalingList8x8"] = []
+                    pps_rbsp_data["UseDefaultScalingMatrix8x8Flag"] = []
+                    if (pps_rbsp_data["pic_scaling_list_present_flag"][i]):
+                        if i < 6:
+                            scaling_list, use_defualtmatrix, BitStreamPointer = self.get_scaling_list(16,
+                                                                                                 self.nal_rbsp_bitstream,
+                                                                                                 BitStreamPointer)
+                            pps_rbsp_data["ScalingList4x4"].append(scaling_list)
+                            pps_rbsp_data["UseDefaultScalingMatrix4x4Flag"] = use_defualtmatrix
+                        else:
+                            scaling_list, use_defualtmatrix, BitStreamPointer = self.get_scaling_list(16,
+                                                                                                 self.nal_rbsp_bitstream,
+                                                                                                 BitStreamPointer)
+                            pps_rbsp_data["ScalingList8x8"].append(scaling_list)
+                            pps_rbsp_data["UseDefaultScalingMatrix8x8Flag"] = use_defualtmatrix
 
-                        i += 1
-                    CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
-                    pps_rbsp_data["second_chroma_qp_index_offset"] = get_se(CodeNum)
-            if (BitStreamPointer < len(self.nal_rbsp_bitstream)):
-                BitStreamPointer = self.get_rbsp_trailing_bits(self.nal_rbsp_bitstream, BitStreamPointer)
+                    i += 1
+                CodeNum, BitStreamPointer, NumLeadZeros, RequiredBits = decode_ue(self.nal_rbsp_bitstream, BitStreamPointer)
+                pps_rbsp_data["second_chroma_qp_index_offset"] = get_se(CodeNum)
+        if (BitStreamPointer < len(self.nal_rbsp_bitstream)):
+            BitStreamPointer = self.get_rbsp_trailing_bits(self.nal_rbsp_bitstream, BitStreamPointer)
         return pps_rbsp_data
