@@ -26,6 +26,21 @@ class NaluTests(unittest.TestCase):
     sps2 = NAL(sps2_nal)
     sps3 = NAL(sps3_nal)
 
+    if ('chroma_format_idc' in sps1.nal_parameters["sps_rbsp_parameters"].keys()):
+        pps1 = NAL(pps1_nal, sps1.nal_parameters["sps_rbsp_parameters"]["chroma_format_idc"])
+    else:
+        pps1 = NAL(pps1_nal)
+
+    if ('chroma_format_idc' in sps2.nal_parameters["sps_rbsp_parameters"].keys()):
+        pps2 = NAL(pps2_nal, sps2.nal_parameters["sps_rbsp_parameters"]["chroma_format_idc"])
+    else:
+        pps2 = NAL(pps2_nal)
+
+    if ('chroma_format_idc' in sps3.nal_parameters["sps_rbsp_parameters"].keys()):
+        pps3 = NAL(pps3_nal, sps3.nal_parameters["sps_rbsp_parameters"]["chroma_format_idc"])
+    else:
+        pps3 = NAL(pps3_nal)
+
     def test_nalu_forbidden_header_bit(self):
 
         self.assertEqual(
@@ -40,20 +55,29 @@ class NaluTests(unittest.TestCase):
             self.sps3.nal_parameters["forbidden_zero_bit"], False
 
         )
+        self.assertEqual(self.pps1.nal_parameters["forbidden_zero_bit"], False)
+        self.assertEqual(self.pps2.nal_parameters["forbidden_zero_bit"], False)
+
     def test_sps_type(self):
         self.assertEqual(self.sps1.nal_parameters["nal_unit_type"], 7)
         self.assertEqual(self.sps2.nal_parameters["nal_unit_type"], 7)
         self.assertEqual(self.sps3.nal_parameters["nal_unit_type"], 7)
+        self.assertEqual(self.pps1.nal_parameters["nal_unit_type"], 8)
+        self.assertEqual(self.pps2.nal_parameters["nal_unit_type"], 8)
 
     def test_sps_nal_ref_idc(self):
         self.assertEqual((self.sps1.nal_parameters["nal_ref_idc"] != 0), True)
         self.assertEqual((self.sps2.nal_parameters["nal_ref_idc"] != 0), True)
         self.assertEqual((self.sps3.nal_parameters["nal_ref_idc"] != 0), True)
+        self.assertEqual((self.pps1.nal_parameters["nal_ref_idc"] != 0), True)
+        self.assertEqual((self.pps2.nal_parameters["nal_ref_idc"] != 0), True)
 
     def test_nal_rbsp_exists(self):
         self.assertEqual((len(self.sps1.nal_rbsp_bitstream) > 0), True)
         self.assertEqual((len(self.sps2.nal_rbsp_bitstream) > 0), True)
         self.assertEqual((len(self.sps3.nal_rbsp_bitstream) > 0), True)
+        self.assertEqual((len(self.pps1.nal_rbsp_bitstream) > 0), True)
+        self.assertEqual((len(self.pps2.nal_rbsp_bitstream) > 0), True)
 
     def test_sps_rbsp_reserved_zero2bits(self):
         self.assertEqual((self.sps1.nal_parameters["sps_rbsp_parameters"]["reserved_zero_2bits"] == 0), True)
